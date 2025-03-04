@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeVerse - Your Ultimate Meme Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        .meme-card {
+            transition: transform 0.3s ease;
+        }
+        .meme-card:hover {
+            transform: translateY(-5px);
+        }
+        .like-button.active {
+            animation: pulse 0.5s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">MemeVerse</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="bi bi-moon-stars dark:bi-sun"></i>
+                    </button>
+                    <a href="#upload" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Upload Meme</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Categories -->
+        <div class="flex flex-wrap gap-4 mb-8">
+            <button class="px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700">Trending</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">New</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Classic</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Random</button>
+        </div>
+
+        <!-- Search -->
+        <div class="mb-8">
+            <input type="text" placeholder="Search memes..." class="w-full p-4 rounded-lg border dark:bg-gray-800 dark:text-white">
+        </div>
+
+        <!-- Meme Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="memeGrid">
+            <!-- Meme cards will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+        });
+
+        // Simulate meme data
+        const memes = [
+            { id: 1, title: 'Funny Cat', likes: 1200, comments: 45 },
+            { id: 2, title: 'Programming Jokes', likes: 980, comments: 32 },
+            { id: 3, title: 'Monday Blues', likes: 2300, comments: 89 }
+        ];
+
+        // Render memes
+        const memeGrid = document.getElementById('memeGrid');
+
+        function createMemeCard(meme) {
+            return `
+                <div class="meme-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gray-300 dark:bg-gray-700"></div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">${meme.title}</h3>
+                        <div class="flex items-center mt-2 space-x-4">
+                            <button class="like-button flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-purple-600">
+                                <i class="bi bi-heart"></i>
+                                <span>${meme.likes}</span>
+                            </button>
+                            <button class="flex items-center space-x-1 text-gray-600 dark:text-gray-300">
+                                <i class="bi bi-chat"></i>
+                                <span>${meme.comments}</span>
+                            </button>
+                            <button class="flex items-center space-x-1 text-gray-600 dark:text-gray-300">
+                                <i class="bi bi-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        memes.forEach(meme => {
+            memeGrid.innerHTML += createMemeCard(meme);
+        });
+
+        // Like button functionality
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('bi-heart');
+                icon.classList.toggle('bi-heart-fill');
+                icon.classList.toggle('text-purple-600');
+            });
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
